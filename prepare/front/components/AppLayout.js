@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import Link from 'next/link'
-import { Menu } from 'antd'
+import { Menu, Input, Row, Col } from 'antd'
 
 const AppLayout = ({ children }) => {
   return (
@@ -17,11 +17,19 @@ const AppLayout = ({ children }) => {
           </Link>
         </Menu.Item>
         <Menu.Item>
+          <Input.Search enterButton style={{ verticalAlign: 'middle' }} />
+        </Menu.Item>
+        <Menu.Item>
           <Link href="/signup">
             <a>회원가입</a>
           </Link>
         </Menu.Item>
       </Menu>
+      <Row>
+        <Col xs={24} md={6} />
+        <Col xs={24} md={12} />
+        <Col xs={24} md={6} />
+      </Row>
       {children}
     </div>
   )
