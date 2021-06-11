@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react'
 import { Form, Input, Button } from 'antd'
-import Password from 'antd/lib/input/Password'
 import Link from 'next/link'
 
 const LoginForm = () => {
