@@ -25,12 +25,23 @@ const AppLayout = ({ children }) => {
           </Link>
         </Menu.Item>
       </Menu>
-      <Row>
-        <Col xs={24} md={6} />
-        <Col xs={24} md={12} />
-        <Col xs={24} md={6} />
+      <Row gutter={8}>
+        <Col xs={24} md={6}>
+          왼쪽 메뉴
+        </Col>
+        <Col xs={24} md={12}>
+          {children}
+        </Col>
+        <Col xs={24} md={6}>
+          <a
+            href="https://www.naver.com"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            Made By Yusu
+          </a>
+        </Col>
       </Row>
-      {children}
     </div>
   )
 }
