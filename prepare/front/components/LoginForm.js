@@ -36,12 +36,12 @@ const LoginForm = () => {
         <label htmlFor="user-id">비밀번호</label>
         <br />
         <Input
-          name="user-id"
+          name="user-nickname"
           type="password"
           value={password}
           onChange={onChangePassword}
           required
-          autocomplete="off"
+          autoComplete="user-password"
         />
       </div>
       <ButtonWrapper>

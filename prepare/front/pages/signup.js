@@ -72,7 +72,7 @@ const Signup = () => {
             value={password}
             required
             onChange={onChangePassword}
-            autocomplete="off"
+            autocomplete="new-password"
           />
         </div>
         <div>
@@ -84,7 +84,7 @@ const Signup = () => {
             value={passwordCheck}
             required
             onChange={onChangePasswordCheck}
-            autocomplete="off"
+            autocomplete="new-password"
           />
           {passwordError && (
             <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>
