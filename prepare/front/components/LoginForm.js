@@ -41,6 +41,7 @@ const LoginForm = () => {
           value={password}
           onChange={onChangePassword}
           required
+          autocomplete="off"
         />
       </div>
       <ButtonWrapper>
