@@ -6,13 +6,43 @@ export const initialState = {
 }
 
 export const loginAction = data => {
+  return (dispatch, getState) => {
+    const state = getState()
+
+    dispatch(loginRequestAction())
+    axios
+      .post('/api/login')
+      .then(res => {
+        dispatch(loginSuccesstAction(res.data))
+      })
+      .catch(err => {
+        dispatch(loginFailAction(err))
+      })
+  }
+}
+
+export const loginRequestAction = data => {
   return {
     type: 'LOG_IN',
     data,
   }
 }
 
-export const logoutAction = () => {
+export const loginSuccesstAction = data => {
+  return {
+    type: 'LOG_SUCCESS',
+    data,
+  }
+}
+
+export const loginFailAction = data => {
+  return {
+    type: 'LOG_FAIL',
+    data,
+  }
+}
+
+export const logoutRequestAction = () => {
   return {
     type: 'LOG_OUT',
   }
