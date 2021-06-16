@@ -1,33 +1,43 @@
-import { useCallback, useRef } from 'react'
-import { useSelector } from 'react-redux'
-import PropTypes from 'prop-types'
+import { useCallback, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Form, Input, Button } from 'antd'
+import PropTypes from 'prop-types'
 
 import useInput from '../hooks/useInput'
+import { addComment } from '../reducers/post'
 
 const CommentForm = ({ post }) => {
-  const id = useSelector(state => state.user.me?.id)
+  const dispatch = useDispatch()
+  const { id } = useSelector(state => state.user.me)
+  const { addCommentLoading, addCommentDone } = useSelector(state => state.post)
+
   const [commentText, onChangeCommentText, setCommentText] = useInput('')
-  const inputTextArea = useRef()
+
+  useEffect(() => {
+    if (addCommentDone) {
+      setCommentText('')
+    }
+  }, [addCommentDone])
 
   const onSubmitComment = useCallback(() => {
-    console.log(post.id, commentText)
-    setCommentText('')
-    inputTextArea.current.focus()
-  }, [commentText, inputTextArea.current])
+    dispatch(
+      addComment({
+        content: commentText,
+        postId: post.id,
+        userId: id,
+      })
+    )
+  }, [commentText, id])
 
   return (
     <Form onFinish={onSubmitComment}>
       <Form.Item style={{ position: 'relative', margin: 0, zIndex: 1 }}>
-        <Input.TextArea
-          value={commentText}
-          onChange={onChangeCommentText}
-          ref={inputTextArea}
-        />
+        <Input.TextArea value={commentText} onChange={onChangeCommentText} />
         <Button
           style={{ position: 'absolute', right: 0, bottom: -40 }}
           type="primary"
           htmlType="submit"
+          loading={addCommentLoading}
         >
           삐약
         </Button>
