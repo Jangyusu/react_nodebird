@@ -3,7 +3,7 @@ import shortId from 'shortid'
 export const initialState = {
   mainPosts: [
     {
-      id: 1,
+      id: shortId.generate(),
       User: {
         id: 1,
         nickname: 'yusu',
