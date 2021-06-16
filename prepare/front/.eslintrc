@@ -22,7 +22,7 @@
     "react/jsx-filename-extension": "off",
     "react/jsx-wrap-multilines": "off",
     "react/no-array-index-key": "off",
-    "jsx-a11y/label-has/associated-control": "off",
+    "jsx-a11y/label-has-associated-control": "off",
     "jsx-a11y/anchor-is-valid": "off",
     "object-curly-newline": "off",
     "no-underscore-dangle": "off",

@@ -46,7 +46,7 @@ const Signup = () => {
       return setTermError(true)
     }
 
-    dispatch(
+    return dispatch(
       signupRequest({
         email,
         password,

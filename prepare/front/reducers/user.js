@@ -49,25 +49,19 @@ const dummyUser = data => ({
   Followers: [],
 })
 
-export const loginRequest = data => {
-  return {
-    type: LOG_IN_REQUEST,
-    data,
-  }
-}
+export const loginRequest = data => ({
+  type: LOG_IN_REQUEST,
+  data,
+})
 
-export const logoutRequest = () => {
-  return {
-    type: LOG_OUT_REQUEST,
-  }
-}
+export const logoutRequest = () => ({
+  type: LOG_OUT_REQUEST,
+})
 
-export const signupRequest = data => {
-  return {
-    type: SIGN_UP_REQUEST,
-    data,
-  }
-}
+export const signupRequest = data => ({
+  type: SIGN_UP_REQUEST,
+  data,
+})
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
