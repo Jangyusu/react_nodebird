@@ -30,6 +30,8 @@
     "linebreak-style": "off",
     "semi": "off",
     "arrow-parens": "off",
-    "comma-dangle": "off"
+    "comma-dangle": "off",
+    "no-param-reassign": "off",
+    "allowTernary": true
   }
 }
