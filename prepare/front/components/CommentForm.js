@@ -8,7 +8,7 @@ import { addComment } from '../reducers/post'
 
 const CommentForm = ({ post }) => {
   const dispatch = useDispatch()
-  const { id } = useSelector(state => state.user.me)
+  const { me } = useSelector(state => state.user)
   const { addCommentLoading, addCommentDone } = useSelector(state => state.post)
 
   const [commentText, onChangeCommentText, setCommentText] = useInput('')
@@ -24,10 +24,10 @@ const CommentForm = ({ post }) => {
       addComment({
         content: commentText,
         postId: post.id,
-        userId: id,
+        userId: me.id,
       })
     )
-  }, [commentText, id])
+  }, [commentText, me.id])
 
   return (
     <Form onFinish={onSubmitComment}>
