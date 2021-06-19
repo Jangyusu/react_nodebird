@@ -46,7 +46,7 @@ function* addPost(action) {
     // const result = yield call(addPostAPI, action.data)
     const id = shortid.generate()
 
-    yield delay(1000)
+    yield delay(500)
     yield put({
       type: ADD_POST_SUCCESS,
       data: {
@@ -73,7 +73,7 @@ function removePostAPI(data) {
 function* removePost(action) {
   try {
     // const result = yield call(removePostAPI, action.data)
-    yield delay(1000)
+    yield delay(500)
     yield put({
       type: REMOVE_POST_SUCCESS,
       data: action.data,
@@ -97,7 +97,7 @@ function addCommentAPI(data) {
 function* addComment(action) {
   try {
     // const result = yield call(addCommentAPI, action.data)
-    yield delay(1000)
+    yield delay(500)
     yield put({
       type: ADD_COMMENT_SUCCESS,
       data: action.data,

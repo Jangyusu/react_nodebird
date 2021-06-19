@@ -17,6 +17,11 @@ export const initialState = {
   changeNicknameDone: false,
   changeNicknameError: null,
 
+  followId: null, // 팔로우
+  followLoading: false,
+  followDone: false,
+  followError: null,
+
   unfollowLoading: false, // 언팔로우
   unfollowDone: false,
   unfollowError: null,
@@ -58,28 +63,8 @@ const dummyUser = data => ({
   nickname: 'yusu',
   id: 1,
   Posts: [],
-  Followings: [
-    {
-      nickname: 'yusu1',
-    },
-    {
-      nickname: 'yusu2',
-    },
-    {
-      nickname: 'yusu3',
-    },
-  ],
-  Followers: [
-    {
-      nickname: 'yusu1',
-    },
-    {
-      nickname: 'yusu2',
-    },
-    {
-      nickname: 'yusu3',
-    },
-  ],
+  Followings: [],
+  Followers: [],
 })
 
 export const loginRequest = data => ({
@@ -98,6 +83,16 @@ export const signupRequest = data => ({
 
 export const changeNicknameRequest = data => ({
   type: CHANGE_NICKNAME_REQUEST,
+  data,
+})
+
+export const followRequest = data => ({
+  type: FOLLOW_REQUEST,
+  data,
+})
+
+export const unfollowRequest = data => ({
+  type: UNFOLLOW_REQUEST,
   data,
 })
 
@@ -157,6 +152,43 @@ const reducer = (state = initialState, action) =>
       case CHANGE_NICKNAME_FAILURE:
         draft.changeNicknameLoading = false
         draft.changeNicknameError = action.error
+        break
+      case FOLLOW_REQUEST:
+        draft.followLoading = true
+        draft.followDone = false
+        draft.followError = null
+        draft.followId = action.data.postId
+        break
+      case FOLLOW_SUCCESS:
+        draft.followLoading = false
+        draft.followDone = true
+        draft.followId = null
+        draft.me.Followings.push(action.data)
+        break
+      case FOLLOW_FAILURE:
+        draft.followLoading = false
+        draft.followError = action.error
+        draft.followId = null
+        break
+      case UNFOLLOW_REQUEST:
+        draft.unfollowLoading = true
+        draft.unfollowDone = false
+        draft.unfollowError = null
+        draft.followId = action.data.postId
+        break
+      case UNFOLLOW_SUCCESS:
+        const followIndex = draft.me.Followings.findIndex(
+          v => v.userId === action.data.userId
+        )
+        draft.unfollowLoading = false
+        draft.unfollowDone = true
+        draft.me.Followings.splice(followIndex, 1)
+        draft.followId = null
+        break
+      case UNFOLLOW_FAILURE:
+        draft.unfollowLoading = false
+        draft.unfollowError = action.error
+        draft.followId = null
         break
       case ADD_POST_TO_ME:
         draft.me.Posts.unshift({
