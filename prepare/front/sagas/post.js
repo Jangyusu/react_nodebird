@@ -18,8 +18,8 @@ import {
 } from '../reducers/post'
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../reducers/user'
 
-function loadPostsAPI(data) {
-  return axios.get('/api/post', data)
+function loadPostsAPI(lastId = 0, limit = 0) {
+  return axios.get(`/posts?lastId=${lastId}&limit=${limit}`)
 }
 
 function* loadPosts(action) {
