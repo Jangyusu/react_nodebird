@@ -10,6 +10,13 @@ module.exports = (sequelize, DataTypes) => {
     collate: 'utf8mb4_general_ci', // 이모티콘 저장
   })
   
-  Post.associate = (db) => {}
+  Post.associate = (db) => {
+    db.Post.belongsTo(db.User)
+    db.Post.hasMany(db.Comment)
+    db.Post.belongsToMany(db.Hashtag)
+    db.Post.hasMany(db.image)
+    db.Post.belongsToMany(db.User, { through: 'Like' , as: 'Likers' })
+    db.Post.belongsTo(db.Post, { as: 'Retweet' })
+  }
   return Post
 }
