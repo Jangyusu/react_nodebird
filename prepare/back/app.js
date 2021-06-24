@@ -1,7 +1,10 @@
 const express = require('express')
+const cors = require('cors')
+
 const postRouter = require('./routes/post')
 const userRouter = require('./routes/user')
 const db = require('./models')
+
 const app = express()
 
 db.sequelize.sync()
@@ -12,6 +15,10 @@ db.sequelize.sync()
     console.error(err)
   })
 
+app.use(cors({
+  origin: true,
+  // credentials: false
+}))
 app.use(express.json()) // json data 처리
 app.use(express.urlencoded({ extended: true })) // form data 처리
 
