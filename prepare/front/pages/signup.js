@@ -46,14 +46,7 @@ const Signup = () => {
       return setTermError(true)
     }
 
-    return dispatch(
-      signupRequest({
-        email,
-        password,
-        passwordCheck,
-        term,
-      })
-    )
+    return dispatch(signupRequest({ email, password, nickname }))
   }, [email, password, passwordCheck, term])
 
   return (
