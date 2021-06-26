@@ -43,11 +43,10 @@ function logOutAPI() {
 
 function* logOut() {
   try {
-    // const result = yield call(logOutAPI)
-    yield delay(500)
+    const result = yield call(logOutAPI)
+    console.log(result)
     yield put({
       type: LOG_OUT_SUCCESS,
-      // data: result.data,
     })
   } catch (err) {
     yield put({
@@ -67,7 +66,6 @@ function* signUp(action) {
     console.log(result)
     yield put({
       type: SIGN_UP_SUCCESS,
-      // data: result.data,
     })
   } catch (err) {
     yield put({

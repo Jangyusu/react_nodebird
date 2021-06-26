@@ -16,15 +16,23 @@ router.post('/login', (req, res, next) => {
       return res.status(401).send(info.reason)
     }
 
+    // passport error
     return req.login(user, async (loginErr) => {
       if (loginErr) {
         console.error(loginErr)
         return next(loginErr)
       }
 
+      // res.setHeader('Cookie', '임의의 문자열')
       return res.status(200).json(user)
     })
   })(req, res, next)
+})
+
+router.post('/logout', (req, res, next) => {
+  req.logout()
+  req.session.destroy()
+  res.send('ok')
 })
 
 router.post('/', async (req, res, next) => { // POST /user
