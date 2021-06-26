@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const { Post } = require('../models')
+const { User, Post, Image, Comment } = require('../models')
 const { isLoggedIn  } = require('./middlewares')
 
 router.post('/', isLoggedIn, async (req, res, next) => {
@@ -11,11 +11,20 @@ router.post('/', isLoggedIn, async (req, res, next) => {
       UserId: req.user.id
     })
 
-    res.status(201).json(post)
+    const fullPost = await Post.findOne({
+      where: { id: post.id },
+      include: [
+        { model: User },
+        { model: Image },
+        { model: Comment}
+      ]
+    })
+
+    res.status(201).json(fullPost)
   } catch (err) {
     console.error(err)
     next(err)
-  }
+  }ㅅ
 })
 
 router.post('/:postId/common', isLoggedIn, async (req, res, next) => {
