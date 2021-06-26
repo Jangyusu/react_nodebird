@@ -26,7 +26,7 @@ db.sequelize.sync()
 
 app.use(cors({
   origin: true,
-  // credentials: false
+  credentials: true // browser에 쿠키를  전달하기 위해 credentials = true
 }))
 app.use(express.json()) // json data 처리
 app.use(express.urlencoded({ extended: true })) // form data 처리
