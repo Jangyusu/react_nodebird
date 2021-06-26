@@ -1,7 +1,8 @@
 const express = require('express')
 const bcrypt = require('bcrypt')
-const { User } = require('../models')
 const passport = require('passport')
+
+const { User, Post } = require('../models')
 
 const router = express.Router()
 
@@ -23,8 +24,26 @@ router.post('/login', (req, res, next) => {
         return next(loginErr)
       }
 
+      const fullUserWithoutPassword = await User.findOne({
+        where: { id: user.id },
+        attributes: {
+          exclude: ['password']
+        },
+        include: [
+          { model: Post },
+          {
+            model: User,
+            as: 'Followers'
+          },
+          {
+            model: User,
+            as: 'Followings'
+          },
+        ]
+      })
+
       // res.setHeader('Cookie', '임의의 문자열')
-      return res.status(200).json(user)
+      return res.status(200).json(fullUserWithoutPassword)
     })
   })(req, res, next)
 })
