@@ -5,6 +5,7 @@ import AppLayout from '../components/AppLayout'
 import PostForm from '../components/PostForm'
 import PostCard from '../components/PostCard'
 import { loadPosts } from '../reducers/post'
+import { loadMyInfo } from '../reducers/user'
 
 const Home = () => {
   const dispatch = useDispatch()
@@ -15,6 +16,7 @@ const Home = () => {
   const { me } = useSelector(state => state.user)
 
   useEffect(() => {
+    dispatch(loadMyInfo())
     dispatch(loadPosts())
   }, [])
 
