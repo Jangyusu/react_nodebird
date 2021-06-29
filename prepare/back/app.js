@@ -6,6 +6,7 @@ const passport = require('passport')
 const dotenv = require('dotenv')
 
 const postRouter = require('./routes/post')
+const postsRouter = require('./routes/posts')
 const userRouter = require('./routes/user')
 const db = require('./models')
 const passportConfig = require('./passport')
@@ -40,6 +41,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.use('/post', postRouter)
+app.use('/posts', postsRouter)
 app.use('/user', userRouter)
 
 app.listen(3065, () => {

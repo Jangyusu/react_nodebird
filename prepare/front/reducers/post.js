@@ -25,31 +25,31 @@ export const initialState = {
   addCommentError: null,
 }
 
-export const generateDummyPost = number =>
-  Array(number)
-    .fill()
-    .map(() => ({
-      id: shortId.generate(),
-      User: {
-        id: shortId.generate(),
-        nickname: faker.name.findName(),
-      },
-      content: faker.lorem.paragraph(),
-      Images: [
-        {
-          src: faker.image.image(),
-        },
-      ],
-      Comments: [
-        {
-          User: {
-            id: shortId.generate(),
-            nickname: faker.name.findName(),
-          },
-          content: faker.lorem.sentence(),
-        },
-      ],
-    }))
+// export const generateDummyPost = number =>
+//   Array(number)
+//     .fill()
+//     .map(() => ({
+//       id: shortId.generate(),
+//       User: {
+//         id: shortId.generate(),
+//         nickname: faker.name.findName(),
+//       },
+//       content: faker.lorem.paragraph(),
+//       Images: [
+//         {
+//           src: faker.image.image(),
+//         },
+//       ],
+//       Comments: [
+//         {
+//           User: {
+//             id: shortId.generate(),
+//             nickname: faker.name.findName(),
+//           },
+//           content: faker.lorem.sentence(),
+//         },
+//       ],
+//     }))
 
 export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST'
 export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS'
@@ -66,26 +66,6 @@ export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE'
 export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST'
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS'
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE'
-
-// const dummyPost = ({ id, content }) => ({
-//   id,
-//   content,
-//   User: {
-//     id: 1,
-//     nickname: '제로초',
-//   },
-//   Images: [],
-//   Comments: [],
-// })
-
-// const dummyComment = ({ content, userId }) => ({
-//   id: shortId.generate(),
-//   User: {
-//     id: userId,
-//     nickname: 'yusu',
-//   },
-//   content,
-// })
 
 export const loadPosts = () => ({
   type: LOAD_POSTS_REQUEST,

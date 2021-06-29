@@ -1,13 +1,5 @@
 import axios from 'axios'
-import {
-  all,
-  call,
-  delay,
-  fork,
-  put,
-  takeLatest,
-  throttle,
-} from 'redux-saga/effects'
+import { all, call, delay, fork, put, takeLatest } from 'redux-saga/effects'
 
 import {
   LOAD_POSTS_REQUEST,
@@ -22,7 +14,6 @@ import {
   ADD_COMMENT_REQUEST,
   ADD_COMMENT_SUCCESS,
   ADD_COMMENT_FAILURE,
-  generateDummyPost,
 } from '../reducers/post'
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../reducers/user'
 
@@ -32,10 +23,10 @@ function loadPostsAPI(lastId = 0, limit = 0) {
 
 function* loadPosts(action) {
   try {
-    // const result = yield call(loadPostsAPI, action.data)
+    const result = yield call(loadPostsAPI, action.data)
     yield put({
       type: LOAD_POSTS_SUCCESS,
-      data: generateDummyPost(10),
+      data: result.data,
     })
   } catch (err) {
     yield put({
