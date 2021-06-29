@@ -1,16 +1,32 @@
 const express = require('express')
-
-const { Post } = require('../models')
-
 const router = express.Router()
+
+const { Post, User, Image, Comment } = require('../models')
 
 router.get('/', async (req, res, next) => { // GET /posts
   try {
     const posts = await Post.findAll({
-      // where: { id: lastId },
       limit: 10, // 10개씩 가져오기
-      // offset: 0, // 0번째부터 가져오기 (중간에 데이터가 추가되거나 삭제되는 경우 이슈)
-      order: [['createdAt', 'DESC']] // 최신 순 가져오기,
+      order: [
+        ['createdAt', 'DESC'],
+        [Comment, 'createdAt', 'ASC']
+      ],
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'nickname']
+        },
+        { model: Image },
+        {
+          model: Comment,
+          include: [
+            {
+              model: User,
+              attributes: ['id', 'nickname']
+            }
+          ]
+        }
+      ]
     })
 
     res.status(200).json(posts)

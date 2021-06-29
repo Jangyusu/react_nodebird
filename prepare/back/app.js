@@ -4,6 +4,7 @@ const session = require('express-session')
 const cookieParser = require('cookie-parser')
 const passport = require('passport')
 const dotenv = require('dotenv')
+const morgan = require('morgan')
 
 const postRouter = require('./routes/post')
 const postsRouter = require('./routes/posts')
@@ -25,6 +26,7 @@ db.sequelize.sync()
     console.error(err)
   })
 
+app.use(morgan('dev'))
 app.use(cors({
   origin: true,
   credentials: true // browser에 쿠키를  전달하기 위해 credentials = true

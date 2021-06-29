@@ -14,9 +14,20 @@ router.post('/', isLoggedIn, async (req, res, next) => {
     const fullPost = await Post.findOne({
       where: { id: post.id },
       include: [
-        { model: User },
+        {
+          model: User,
+          attributes: ['id', 'nickname']
+        },
         { model: Image },
-        { model: Comment}
+        {
+          model: Comment,
+          include: [
+            {
+              model: User,
+              attributes: ['id', 'nickname']
+            }
+          ]
+        }
       ]
     })
 
@@ -24,10 +35,10 @@ router.post('/', isLoggedIn, async (req, res, next) => {
   } catch (err) {
     console.error(err)
     next(err)
-  }ㅅ
+  }
 })
 
-router.post('/:postId/common', isLoggedIn, async (req, res, next) => {
+router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
   try {
     const post = await Post.findOne({
       where: { id: req.params.postId }
@@ -39,11 +50,21 @@ router.post('/:postId/common', isLoggedIn, async (req, res, next) => {
 
     const comment = await Comment.create({
       content: req.body.content,
-      PostId: req.params.postId,
+      PostId: parseInt(req.params.postId, 10),
       UserId: req.user.id
     })
 
-    res.status(201).json(comment)
+    const fullComment = await Comment.findOne({
+      where: { id: comment.id },
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'nickname']
+        }
+      ]
+    })
+
+    res.status(201).json(fullComment)
   } catch (err) {
     console.error(err)
     next(err)

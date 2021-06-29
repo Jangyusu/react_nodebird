@@ -17,18 +17,19 @@ import {
 } from '../reducers/post'
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../reducers/user'
 
-function loadPostsAPI(lastId = 0, limit = 0) {
-  return axios.get(`/posts?lastId=${lastId}&limit=${limit}`)
+function loadPostsAPI() {
+  return axios.get('/posts')
 }
 
-function* loadPosts(action) {
+function* loadPosts() {
   try {
-    const result = yield call(loadPostsAPI, action.data)
+    const result = yield call(loadPostsAPI)
     yield put({
       type: LOAD_POSTS_SUCCESS,
       data: result.data,
     })
   } catch (err) {
+    console.error(err)
     yield put({
       type: LOAD_POSTS_FAILURE,
       error: err.response.data,
@@ -52,6 +53,7 @@ function* addPost(action) {
       data: result.data.id,
     })
   } catch (err) {
+    console.error(err)
     yield put({
       type: ADD_POST_FAILURE,
       error: err.response.data,
@@ -76,6 +78,7 @@ function* removePost(action) {
       data: action.data,
     })
   } catch (err) {
+    console.error(err)
     yield put({
       type: REMOVE_POST_FAILURE,
       error: err.response.data,
@@ -84,7 +87,7 @@ function* removePost(action) {
 }
 
 function addCommentAPI(data) {
-  return axios.post(`/post/${data.id}/comment`, data) // POST /post/postId/comment
+  return axios.post(`/post/${data.postId}/comment`, data) // POST /post/postId/comment
 }
 
 function* addComment(action) {
@@ -95,6 +98,7 @@ function* addComment(action) {
       data: result.data,
     })
   } catch (err) {
+    console.error(err)
     yield put({
       type: ADD_COMMENT_FAILURE,
       error: err.response.data,

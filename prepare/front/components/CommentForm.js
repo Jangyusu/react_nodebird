@@ -48,9 +48,9 @@ const CommentForm = ({ post }) => {
 
 CommentForm.propTypes = {
   post: PropTypes.shape({
-    id: PropTypes.string,
+    id: PropTypes.number,
     User: PropTypes.shape({
-      id: PropTypes.string,
+      id: PropTypes.number,
       nickname: PropTypes.string,
     }),
     content: PropTypes.string,
@@ -67,7 +67,7 @@ CommentForm.propTypes = {
         }),
       })
     ),
-    createdAt: PropTypes.object,
+    createdAt: PropTypes.string,
   }).isRequired,
 }
 
