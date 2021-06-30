@@ -21,6 +21,14 @@ export const initialState = {
   addCommentLoading: false,
   addCommentDone: false,
   addCommentError: null,
+
+  likePostLoading: false,
+  likePostDone: false,
+  likePostError: null,
+
+  unlikePostLoading: false,
+  unlikePostDone: false,
+  unlikePostError: null,
 }
 
 export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST'
@@ -39,6 +47,14 @@ export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST'
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS'
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE'
 
+export const LIKE_POST_REQUEST = 'LIKE_POST_REQUEST'
+export const LIKE_POST_SUCCESS = 'LIKE_POST_SUCCESS'
+export const LIKE_POST_FAILURE = 'LIKE_POST_FAILURE'
+
+export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST'
+export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS'
+export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE'
+
 export const loadPosts = () => ({
   type: LOAD_POSTS_REQUEST,
 })
@@ -48,13 +64,23 @@ export const addPost = data => ({
   data,
 })
 
+export const removePost = data => ({
+  type: REMOVE_POST_REQUEST,
+  data,
+})
+
 export const addComment = data => ({
   type: ADD_COMMENT_REQUEST,
   data,
 })
 
-export const removePost = data => ({
-  type: REMOVE_POST_REQUEST,
+export const likePost = data => ({
+  type: LIKE_POST_REQUEST,
+  data,
+})
+
+export const unlikePost = data => ({
+  type: UNLIKE_POST_REQUEST,
   data,
 })
 
@@ -67,10 +93,11 @@ const reducer = (state = initialState, action) => {
         draft.loadPostsError = null
         break
       case LOAD_POSTS_SUCCESS:
-        draft.loadPostsLoading = false
-        draft.loadPostsDone = true
         draft.mainPosts = action.data.concat(draft.mainPosts)
         draft.hasMorePosts = draft.mainPosts.length < 50
+
+        draft.loadPostsLoading = false
+        draft.loadPostsDone = true
         break
       case LOAD_POSTS_FAILURE:
         draft.loadPostsLoading = false
@@ -83,6 +110,7 @@ const reducer = (state = initialState, action) => {
         break
       case ADD_POST_SUCCESS:
         draft.mainPosts.unshift(action.data)
+
         draft.addPostLoading = false
         draft.addPostDone = true
         break
@@ -97,6 +125,7 @@ const reducer = (state = initialState, action) => {
         break
       case REMOVE_POST_SUCCESS:
         draft.mainPosts = draft.mainPosts.filter(v => v.id !== action.data)
+
         draft.removePostLoading = false
         draft.removePostDone = true
         break
@@ -111,8 +140,8 @@ const reducer = (state = initialState, action) => {
         break
       case ADD_COMMENT_SUCCESS: {
         const post = draft.mainPosts.find(v => v.id === action.data.PostId)
-
         post.Comments.push(action.data)
+
         draft.addCommentLoading = false
         draft.addCommentDone = true
         break
@@ -120,6 +149,40 @@ const reducer = (state = initialState, action) => {
       case ADD_COMMENT_FAILURE:
         draft.addCommentLoading = false
         draft.addCommentError = action.error
+        break
+      case LIKE_POST_REQUEST:
+        draft.likePostLoading = true
+        draft.likePostDone = false
+        draft.likePostError = null
+        break
+      case LIKE_POST_SUCCESS: {
+        const post = draft.mainPosts.find(v => v.id === action.data.PostId)
+        post.Likers.push({ id: action.data.UserId })
+
+        draft.likePostLoading = false
+        draft.likePostDone = true
+        break
+      }
+      case LIKE_POST_FAILURE:
+        draft.likePostLoading = false
+        draft.likePostError = action.error
+        break
+      case UNLIKE_POST_REQUEST:
+        draft.unlikePostLoading = true
+        draft.unlikePostDone = false
+        draft.unlikePostError = null
+        break
+      case UNLIKE_POST_SUCCESS: {
+        const post = draft.mainPosts.find(v => v.id === action.data.PostId)
+        post.Likers = post.Likers.filter(v => v.id !== action.data.UserId)
+
+        draft.unlikePostLoading = false
+        draft.unlikePostDone = true
+        break
+      }
+      case UNLIKE_POST_FAILURE:
+        draft.unlikePostLoading = false
+        draft.unlikePostError = action.error
         break
       default:
         break
