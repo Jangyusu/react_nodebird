@@ -84,7 +84,7 @@ export const signupRequest = data => ({
   data,
 })
 
-export const changeNicknameRequest = data => ({
+export const changeNickname = data => ({
   type: CHANGE_NICKNAME_REQUEST,
   data,
 })
@@ -163,6 +163,7 @@ const reducer = (state = initialState, action) =>
         draft.changeNicknameError = null
         break
       case CHANGE_NICKNAME_SUCCESS:
+        draft.me.nickname = action.data.nickname
         draft.changeNicknameLoading = false
         draft.changeNicknameDone = true
         break
@@ -213,7 +214,7 @@ const reducer = (state = initialState, action) =>
         })
         break
       case REMOVE_POST_OF_ME: {
-        draft.me.Posts = draft.me.Posts.filter(v => v.id !== action.data)
+        draft.me.Posts = draft.me.Posts.filter(v => v.id !== action.data.PostId)
         break
       }
       default:
