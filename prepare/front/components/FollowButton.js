@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Button } from 'antd'
-import { followRequest, unfollowRequest } from '../reducers/user'
+import { follow, unfollow } from '../reducers/user'
 
 const FollowButton = ({ post }) => {
   const dispatch = useDispatch()
@@ -16,21 +16,11 @@ const FollowButton = ({ post }) => {
 
   const onClickButton = useCallback(() => {
     if (isFollowing) {
-      dispatch(
-        unfollowRequest({
-          postId: post.id,
-          userId: post.User.id,
-        })
-      )
+      dispatch(unfollow(post.User.id))
     } else {
-      dispatch(
-        followRequest({
-          postId: post.id,
-          userId: post.User.id,
-        })
-      )
+      dispatch(follow(post.User.id))
     }
-  }, [isFollowing, isPost])
+  }, [isFollowing])
 
   if (post.User.id === me.id) {
     return null
