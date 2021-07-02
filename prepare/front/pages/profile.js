@@ -1,14 +1,21 @@
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import Head from 'next/head'
 import Router from 'next/router'
-import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
 
 import AppLayout from '../components/AppLayout'
 import NicknameEditForm from '../components/NicknameEditForm'
 import FollowList from '../components/FollowList'
+import { loadFollowers, loadFollowings } from '../reducers/user'
 
 const Profile = () => {
+  const dispatch = useDispatch()
   const { me } = useSelector(state => state.user)
+
+  useEffect(() => {
+    dispatch(loadFollowers())
+    dispatch(loadFollowings())
+  }, [])
 
   useEffect(() => {
     if (!me?.id) {
