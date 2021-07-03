@@ -30,6 +30,10 @@ export const initialState = {
   unfollowDone: false,
   unfollowError: null,
 
+  removeFollowerLoading: false,
+  removeFollowerDone: false,
+  removeFollowerError: null,
+
   loadFollowersLoading: false,
   loadFollowersDone: false,
   loadFollowersError: null,
@@ -70,6 +74,10 @@ export const FOLLOW_FAILURE = 'FOLLOW_FAILURE'
 export const UNFOLLOW_REQUEST = 'UNFOLLOW_REQUEST'
 export const UNFOLLOW_SUCCESS = 'UNFOLLOW_SUCCESS'
 export const UNFOLLOW_FAILURE = 'UNFOLLOW_FAILURE'
+
+export const REMOVE_FOLLOWER_REQUEST = 'REMOVE_FOLLOWER_REQUEST'
+export const REMOVE_FOLLOWER_SUCCESS = 'REMOVE_FOLLOWER_SUCCESS'
+export const REMOVE_FOLLOWER_FAILURE = 'REMOVE_FOLLOWER_FAILURE'
 
 export const LOAD_FOLLOWERS_REQUEST = 'LOAD_FOLLOWERS_REQUEST'
 export const LOAD_FOLLOWERS_SUCCESS = 'LOAD_FOLLOWERS_SUCCESS'
@@ -112,6 +120,11 @@ export const follow = data => ({
 
 export const unfollow = data => ({
   type: UNFOLLOW_REQUEST,
+  data,
+})
+
+export const removeFollower = data => ({
+  type: REMOVE_FOLLOWER_REQUEST,
   data,
 })
 
@@ -232,6 +245,22 @@ const reducer = (state = initialState, action) =>
         draft.unfollowLoading = false
         draft.unfollowError = action.error
         draft.followId = null
+        break
+      case REMOVE_FOLLOWER_REQUEST:
+        draft.removeFollowerLoading = true
+        draft.removeFollowerDone = false
+        draft.removeFollowerError = null
+        break
+      case REMOVE_FOLLOWER_SUCCESS:
+        draft.me.Followers = draft.me.Followers.filter(
+          v => v.id !== action.data.UserId
+        )
+        draft.removeFollowerLoading = false
+        draft.removeFollowerDone = true
+        break
+      case REMOVE_FOLLOWER_FAILURE:
+        draft.removeFollowerLoading = false
+        draft.removeFollowerError = action.error
         break
       case LOAD_FOLLOWERS_REQUEST:
         draft.loadFollowersLoading = true

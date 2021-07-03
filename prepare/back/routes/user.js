@@ -207,4 +207,22 @@ router.delete('/:userId/follow', isLoggedIn, async (req, res, next) => {
   }
 })
 
+router.delete('/follower/:userId', isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await User.findOne({
+      where: { id: req.params.userId }
+    })
+
+    if (!user) {
+      return res.status(403).send('해당 사용자가 존재하지 않습니다')
+    }
+
+    await user.removeFollowings(req.user.id)
+    res.status(200).json({ UserId: parseInt(req.params.userId, 10) })
+  } catch(err) {
+    console.error(err)
+    next(err)
+  }
+})
+
 module.exports = router

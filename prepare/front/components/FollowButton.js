@@ -16,11 +16,21 @@ const FollowButton = ({ post }) => {
 
   const onClickButton = useCallback(() => {
     if (isFollowing) {
-      dispatch(unfollow(post.User.id))
+      dispatch(
+        unfollow({
+          userId: post.User.id,
+          postId: post.id,
+        })
+      )
     } else {
-      dispatch(follow(post.User.id))
+      dispatch(
+        follow({
+          userId: post.User.id,
+          postId: post.id,
+        })
+      )
     }
-  }, [isFollowing])
+  }, [isFollowing, isPost])
 
   if (post.User.id === me.id) {
     return null

@@ -4,14 +4,18 @@ import { List, Button, Card } from 'antd'
 import { StopOutlined } from '@ant-design/icons'
 import PropTypes from 'prop-types'
 
-import { unfollow } from '../reducers/user'
+import { unfollow, removeFollower } from '../reducers/user'
 
 const FollowList = ({ header, data }) => {
   const dispatch = useDispatch()
 
   const onCancel = useCallback(
     userId => () => {
-      dispatch(unfollow(userId))
+      if (header === '팔로잉') {
+        dispatch(unfollow(userId))
+      } else {
+        dispatch(removeFollower(userId))
+      }
     },
     []
   )

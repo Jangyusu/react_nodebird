@@ -22,6 +22,9 @@ import {
   UNFOLLOW_REQUEST,
   UNFOLLOW_SUCCESS,
   UNFOLLOW_FAILURE,
+  REMOVE_FOLLOWER_REQUEST,
+  REMOVE_FOLLOWER_SUCCESS,
+  REMOVE_FOLLOWER_FAILURE,
   LOAD_FOLLOWERS_REQUEST,
   LOAD_FOLLOWERS_SUCCESS,
   LOAD_FOLLOWERS_FAILURE,
@@ -92,8 +95,7 @@ function signUpAPI(data) {
 
 function* signUp(action) {
   try {
-    const result = yield call(signUpAPI, action.data)
-    console.log(result)
+    yield call(signUpAPI, action.data)
     yield put({
       type: SIGN_UP_SUCCESS,
     })
@@ -125,7 +127,7 @@ function* changeNickname(action) {
 }
 
 function followAPI(data) {
-  return axios.patch(`/user/${data}}/follow`)
+  return axios.patch(`/user/${data.userId}}/follow`)
 }
 
 function* follow(action) {
@@ -144,7 +146,7 @@ function* follow(action) {
 }
 
 function unfollowAPI(data) {
-  return axios.delete(`/user/${data}/follow`)
+  return axios.delete(`/user/${data.userId}/follow`)
 }
 
 function* unfollow(action) {
@@ -157,6 +159,25 @@ function* unfollow(action) {
   } catch (err) {
     yield put({
       type: UNFOLLOW_FAILURE,
+      error: err.response.data,
+    })
+  }
+}
+
+function removeFollowerAPI(data) {
+  return axios.delete(`/user/follower/${data}`)
+}
+
+function* removeFollower(action) {
+  try {
+    const result = yield call(removeFollowerAPI, action.data)
+    yield put({
+      type: REMOVE_FOLLOWER_SUCCESS,
+      data: result.data,
+    })
+  } catch (err) {
+    yield put({
+      type: REMOVE_FOLLOWER_FAILURE,
       error: err.response.data,
     })
   }
@@ -228,6 +249,10 @@ function* watchUnFollow() {
   yield takeLatest(UNFOLLOW_REQUEST, unfollow)
 }
 
+function* watchRemoveFollower() {
+  yield takeLatest(REMOVE_FOLLOWER_REQUEST, removeFollower)
+}
+
 function* watchLoadFollowers() {
   yield takeLatest(LOAD_FOLLOWERS_REQUEST, loadFollowers)
 }
@@ -245,6 +270,7 @@ export default function* userSaga() {
     fork(watchChangeNickname),
     fork(watchFollow),
     fork(watchUnFollow),
+    fork(watchRemoveFollower),
     fork(watchLoadFollowers),
     fork(watchLoadFollowings),
   ])
