@@ -29,6 +29,10 @@ export const initialState = {
   unlikePostLoading: false,
   unlikePostDone: false,
   unlikePostError: null,
+
+  uploadImagesLoading: false,
+  uploadImagesDone: false,
+  uploadImagesError: null,
 }
 
 export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST'
@@ -54,6 +58,10 @@ export const LIKE_POST_FAILURE = 'LIKE_POST_FAILURE'
 export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST'
 export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS'
 export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE'
+
+export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST'
+export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS'
+export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE'
 
 export const loadPosts = () => ({
   type: LOAD_POSTS_REQUEST,
@@ -81,6 +89,11 @@ export const likePost = data => ({
 
 export const unlikePost = data => ({
   type: UNLIKE_POST_REQUEST,
+  data,
+})
+
+export const uploadImages = data => ({
+  type: UPLOAD_IMAGES_REQUEST,
   data,
 })
 
@@ -183,6 +196,21 @@ const reducer = (state = initialState, action) => {
         break
       }
       case UNLIKE_POST_FAILURE:
+        draft.unlikePostLoading = false
+        draft.unlikePostError = action.error
+        break
+      case UPLOAD_IMAGES_REQUEST:
+        draft.unlikePostLoading = true
+        draft.unlikePostDone = false
+        draft.unlikePostError = null
+        break
+      case UPLOAD_IMAGES_SUCCESS: {
+        draft.imagePaths = action.data
+        draft.unlikePostLoading = false
+        draft.unlikePostDone = true
+        break
+      }
+      case UPLOAD_IMAGES_FAILURE:
         draft.unlikePostLoading = false
         draft.unlikePostError = action.error
         break

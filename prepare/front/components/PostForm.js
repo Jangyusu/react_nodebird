@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Form, Input, Button } from 'antd'
 
 import useInput from '../hooks/useInput'
-import { addPost } from '../reducers/post'
+import { addPost, uploadImages } from '../reducers/post'
 
 const PostForm = () => {
   const dispatch = useDispatch()
@@ -28,6 +28,17 @@ const PostForm = () => {
     imgInput.current.click()
   }, [imgInput.current])
 
+  const onChangeImages = useCallback(e => {
+    console.log('images', e.target.files)
+    const imageFormData = new FormData()
+
+    ;[].forEach.call(e.target.files, f => {
+      imageFormData.append('image', f)
+    })
+
+    dispatch(uploadImages(imageFormData))
+  }, [])
+
   return (
     <Form
       style={{ margin: '10px 0 20px' }}
@@ -42,7 +53,14 @@ const PostForm = () => {
         ref={textInput}
       />
       <div>
-        <input type="file" multiple hidden ref={imgInput} />
+        <input
+          type="file"
+          name="image"
+          multiple
+          hidden
+          ref={imgInput}
+          onChange={onChangeImages}
+        />
         <Button onClick={onClickImageUpload}>이미지 업로드</Button>
         <Button type="primary" style={{ float: 'right' }} htmlType="submit">
           짹짹
