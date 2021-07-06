@@ -26,6 +26,13 @@ router.get('/', async (req, res, next) => { // GET /posts
         }]
       }, {
         model: Image // 이미지
+      }, {
+        model: Post,
+        as: 'Retweet',
+        include: [{
+          model: User,
+          attributes: ['id', 'nickname']
+        }]
       }]
     })
 
