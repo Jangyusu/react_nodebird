@@ -27,7 +27,8 @@ const Home = () => {
           document.documentElement.clientHeight * 2
       ) {
         if (hasMorePosts && !loadPostsLoading) {
-          dispatch(loadPosts())
+          const lastId = mainPosts[mainPosts.length - 1]?.id
+          dispatch(loadPosts(lastId))
         }
       }
     }

@@ -73,8 +73,9 @@ export const RETWEET_FAILURE = 'RETWEET_FAILURE'
 
 export const REMOVE_IMAGE = 'REMOVE_IMAGE'
 
-export const loadPosts = () => ({
+export const loadPosts = data => ({
   type: LOAD_POSTS_REQUEST,
+  data,
 })
 
 export const addPost = data => ({
@@ -126,8 +127,8 @@ const reducer = (state = initialState, action) => {
         draft.loadPostsError = null
         break
       case LOAD_POSTS_SUCCESS:
-        draft.mainPosts = action.data.concat(draft.mainPosts)
-        draft.hasMorePosts = draft.mainPosts.length < 50
+        draft.mainPosts = draft.mainPosts.concat(action.data)
+        draft.hasMorePosts = draft.mainPosts.length === 10
 
         draft.loadPostsLoading = false
         draft.loadPostsDone = true

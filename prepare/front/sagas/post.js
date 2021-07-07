@@ -29,13 +29,13 @@ import {
 } from '../reducers/post'
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../reducers/user'
 
-function loadPostsAPI() {
-  return axios.get('/posts')
+function loadPostsAPI(data) {
+  return axios.get(`/posts?lastId=${data || 0}`)
 }
 
-function* loadPosts() {
+function* loadPosts(action) {
   try {
-    const result = yield call(loadPostsAPI)
+    const result = yield call(loadPostsAPI, action.data)
     yield put({
       type: LOAD_POSTS_SUCCESS,
       data: result.data,
