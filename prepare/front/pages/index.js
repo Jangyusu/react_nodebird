@@ -1,11 +1,13 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { END } from 'redux-saga'
 
 import AppLayout from '../components/AppLayout'
 import PostForm from '../components/PostForm'
 import PostCard from '../components/PostCard'
 import { loadPosts } from '../reducers/post'
 import { loadMyInfo } from '../reducers/user'
+import wrapper from '../store/configureStore'
 
 const Home = () => {
   const dispatch = useDispatch()
@@ -13,11 +15,6 @@ const Home = () => {
   const { mainPosts, hasMorePosts, loadPostsLoading, retweetError } =
     useSelector(state => state.post)
   const { me } = useSelector(state => state.user)
-
-  useEffect(() => {
-    dispatch(loadMyInfo())
-    dispatch(loadPosts())
-  }, [])
 
   useEffect(() => {
     function onScroll() {
@@ -55,5 +52,13 @@ const Home = () => {
     </AppLayout>
   )
 }
+
+export const getServerSideProps = wrapper.getServerSideProps(async context => {
+  context.store.dispatch(loadMyInfo())
+  context.store.dispatch(loadPosts())
+
+  context.store.dispatch(END)
+  await context.store.sagaTask.toPromise()
+})
 
 export default Home
