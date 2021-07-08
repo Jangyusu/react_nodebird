@@ -7,7 +7,7 @@ module.exports = {
     username: "yusu",
     password: process.env.DB_PASSWORD,
     database: "react-nodebird",
-    host: "119.70.203.142",
+    host: "119.70.203.151",
     port: "3306",
     dialect: "mysql"
   },
@@ -15,14 +15,14 @@ module.exports = {
     username: "yusu",
     password: null,
     database: "react-nodebird",
-    host: "119.70.203.142",
+    host: "119.70.203.151",
     dialect: "mysql"
   },
   production: {
     username: "yusu",
     password: null,
     database: "react-nodebird",
-    host: "119.70.203.142",
+    host: "119.70.203.151",
     dialect: "mysql"
   }
 }
