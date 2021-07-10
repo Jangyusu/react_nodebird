@@ -1,13 +1,14 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { END } from 'redux-saga'
+import axios from 'axios'
 
 import AppLayout from '../components/AppLayout'
 import PostForm from '../components/PostForm'
 import PostCard from '../components/PostCard'
+import wrapper from '../store/configureStore'
 import { loadPosts } from '../reducers/post'
 import { loadMyInfo } from '../reducers/user'
-import wrapper from '../store/configureStore'
 
 const Home = () => {
   const dispatch = useDispatch()
@@ -54,6 +55,14 @@ const Home = () => {
 }
 
 export const getServerSideProps = wrapper.getServerSideProps(async context => {
+  const cookie = context.req ? context.req.headers.cookie : ''
+  /**
+   * 프론트 서버에서 쿠키를 공유해버리는 이슈가 생길 수 있으니 반드시 Cookie 초기화
+   */
+  axios.defaults.headers.Cookie = ''
+  if (context.req && cookie) {
+    axios.defaults.headers.Cookie = cookie
+  }
   context.store.dispatch(loadMyInfo())
   context.store.dispatch(loadPosts())
 

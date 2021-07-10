@@ -5,6 +5,10 @@ export const initialState = {
   loadMyInfoDone: false,
   loadMyInfoError: null,
 
+  loadUserInfoLoading: false, // 다른 유저 정보
+  loadUserInfoDone: false,
+  loadUserInfoError: null,
+
   logInLoading: false, // 로그인
   logInDone: false,
   logInError: null,
@@ -43,13 +47,16 @@ export const initialState = {
   loadFollowingsError: null,
 
   me: null,
-  signUpData: {},
-  loginData: {},
+  userInfo: null,
 }
 
 export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST'
 export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS'
 export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE'
+
+export const LOAD_USER_INFO_REQUEST = 'LOAD_USER_INFO_REQUEST'
+export const LOAD_USER_INFO_SUCCESS = 'LOAD_USER_INFO_SUCCESS'
+export const LOAD_USER_INFO_FAILURE = 'LOAD_USER_INFO_FAILURE'
 
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST'
 export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS'
@@ -152,6 +159,20 @@ const reducer = (state = initialState, action) =>
       case LOAD_MY_INFO_FAILURE:
         draft.loadMyInfoLoading = false
         draft.loadMyInfoError = action.error
+        break
+      case LOAD_USER_INFO_REQUEST:
+        draft.loadUserInfoLoading = true
+        draft.loadUserInfoDone = false
+        draft.loadUserInfoError = null
+        break
+      case LOAD_USER_INFO_SUCCESS:
+        draft.userInfo = action.data
+        draft.loadUserInfoLoading = false
+        draft.loadUserInfoDone = true
+        break
+      case LOAD_USER_INFO_FAILURE:
+        draft.loadUserInfoLoading = false
+        draft.loadUserInfoError = action.error
         break
       case LOG_IN_REQUEST:
         draft.logInLoading = true

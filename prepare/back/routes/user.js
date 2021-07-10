@@ -8,6 +8,8 @@ const { isLoggedIn, isNotLoggedIn } = require('./middlewares')
 const router = express.Router()
 
 router.get('/', async (req, res, next) => { // GET /user
+  console.log('@@@@@', req.headers)
+
   try {
     if (req.user) {
       const fullUserWithoutPassword = await User.findOne({
@@ -32,7 +34,6 @@ router.get('/', async (req, res, next) => { // GET /user
           },
         ]
       })
-  
       res.status(200).json(fullUserWithoutPassword)
     } else {
       res.status(200).json(null)
