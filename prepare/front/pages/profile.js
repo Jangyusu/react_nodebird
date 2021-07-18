@@ -1,11 +1,14 @@
+import Head from 'next/head'
+import axios from 'axios'
+import Router from 'next/router'
+import { END } from 'redux-saga'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Head from 'next/head'
-import Router from 'next/router'
 
+import wrapper from '../store/configureStore'
 import AppLayout from '../components/AppLayout'
-import NicknameEditForm from '../components/NicknameEditForm'
 import FollowList from '../components/FollowList'
+import NicknameEditForm from '../components/NicknameEditForm'
 import { loadFollowers, loadFollowings } from '../reducers/user'
 
 const Profile = () => {
@@ -40,5 +43,20 @@ const Profile = () => {
     )
   }
 }
+
+export const getServerSideProps = wrapper.getServerSideProps(async context => {
+  const cookie = context.req ? context.req.headers.cookie : ''
+  /**
+   * 프론트 서버에서 쿠키를 공유해버리는 이슈가 생길 수 있으니 반드시 Cookie 초기화
+   */
+  axios.defaults.headers.Cookie = ''
+  if (context.req && cookie) {
+    axios.defaults.headers.Cookie = cookie
+  }
+  context.store.dispatch(loadMyInfo())
+
+  context.store.dispatch(END)
+  await context.store.sagaTask.toPromise()
+})
 
 export default Profile

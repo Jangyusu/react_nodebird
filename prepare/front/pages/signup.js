@@ -1,13 +1,16 @@
-import { useCallback, useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import axios from 'axios'
 import Router from 'next/router'
+import { END } from 'redux-saga'
+import { useDispatch, useSelector } from 'react-redux'
+import { useCallback, useEffect, useState } from 'react'
 
 import Head from 'next/head'
-import { Form, Input, Checkbox, Button } from 'antd'
 import styled from 'styled-components'
+import { Form, Input, Checkbox, Button } from 'antd'
 
-import AppLayout from '../components/AppLayout'
+import wrapper from '../store/configureStore'
 import useInput from '../hooks/useInput'
+import AppLayout from '../components/AppLayout'
 import { signupRequest } from '../reducers/user'
 
 const ErrorMessage = styled.div`
@@ -140,5 +143,20 @@ const Signup = () => {
     </AppLayout>
   )
 }
+
+export const getServerSideProps = wrapper.getServerSideProps(async context => {
+  const cookie = context.req ? context.req.headers.cookie : ''
+  /**
+   * 프론트 서버에서 쿠키를 공유해버리는 이슈가 생길 수 있으니 반드시 Cookie 초기화
+   */
+  axios.defaults.headers.Cookie = ''
+  if (context.req && cookie) {
+    axios.defaults.headers.Cookie = cookie
+  }
+  context.store.dispatch(loadMyInfo())
+
+  context.store.dispatch(END)
+  await context.store.sagaTask.toPromise()
+})
 
 export default Signup

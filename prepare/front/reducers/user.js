@@ -101,6 +101,10 @@ export const loadMyInfo = () => ({
   type: LOAD_MY_INFO_REQUEST,
 })
 
+export const loadUserInfo = () => ({
+  type: LOAD_USER_INFO_REQUEST,
+})
+
 export const loginRequest = data => ({
   type: LOG_IN_REQUEST,
   data,

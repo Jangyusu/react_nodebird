@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 
 import UserProfile from './UserProfile'
 import LoginForm from './LoginForm'
+import About from '../pages/about'
 
 const SearchInput = styled(Input.Search)`
   vertical-align: middle;
@@ -54,7 +55,10 @@ const AppLayout = ({ children }) => {
       </Menu>
       <Row gutter={8}>
         <Col xs={24} md={6}>
-          {me ? <UserProfile /> : <LoginForm />}
+          <>
+            {me ? <UserProfile /> : <LoginForm />}
+            <About></About>
+          </>
         </Col>
         <Col xs={24} md={12}>
           {children}
