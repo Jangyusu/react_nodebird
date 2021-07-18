@@ -9,7 +9,7 @@ import wrapper from '../store/configureStore'
 import AppLayout from '../components/AppLayout'
 import FollowList from '../components/FollowList'
 import NicknameEditForm from '../components/NicknameEditForm'
-import { loadFollowers, loadFollowings } from '../reducers/user'
+import { loadFollowers, loadFollowings, loadMyInfo } from '../reducers/user'
 
 const Profile = () => {
   const dispatch = useDispatch()

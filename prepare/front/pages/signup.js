@@ -11,7 +11,7 @@ import { Form, Input, Checkbox, Button } from 'antd'
 import wrapper from '../store/configureStore'
 import useInput from '../hooks/useInput'
 import AppLayout from '../components/AppLayout'
-import { signupRequest } from '../reducers/user'
+import { loadMyInfo, signupRequest } from '../reducers/user'
 
 const ErrorMessage = styled.div`
   color: red;
