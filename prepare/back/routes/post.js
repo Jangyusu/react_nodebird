@@ -77,7 +77,7 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
       }]
     })
 
-    res.status(201).json(fullPost)
+    res.status(200).json(fullPost)
   } catch (err) {
     console.error(err)
     next(err)
@@ -110,7 +110,7 @@ router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
     })
 
     if (!post) {
-      return res.status(403).send('존재하지 않는 게시글입니다')
+      return res.status(404).send('존재하지 않는 게시글입니다')
     }
 
     const comment = await Comment.create({
@@ -129,7 +129,7 @@ router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
       ]
     })
 
-    res.status(201).json(fullComment)
+    res.status(200).json(fullComment)
   } catch (err) {
     console.error(err)
     next(err)
@@ -178,6 +178,50 @@ router.delete('/:postId/like', isLoggedIn, async (req, res, next) => {
   }
 })
 
+router.get('/:postId', async (req, res, next) => { // GET /post/${id}
+  try {
+    const post = await Post.findOne({
+      where: { id: req.params.postId }
+    })
+
+    if (!post) {
+      return res.status(404).send('존재하지 않는 게시글입니다')
+    }
+
+    const fullPost = await Post.findOne({
+      where: { id: post.id },
+      include: [{
+        model: Post,
+        as: 'Retweet',
+        include: [{
+          model: User,
+          attributes: ['id', 'nickname']
+        }]
+      }, {
+        model: User,
+        attributes: ['id', 'nickname']
+      }, {
+        model: Image
+      }, {
+        model: Comment,
+        include: [{
+          model: User,
+          attributes: ['id', 'nickname']
+        }]
+      }, {
+        model: User,
+        as: 'Likers',
+        attributes: ['id']
+      }]
+    })
+
+    res.status(200).json(fullPost)
+  } catch (err) {
+    console.error(err)
+    next(err)
+  }
+})
+
 router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => {
   try {
     const post = await Post.findOne({
@@ -189,7 +233,7 @@ router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => {
     })
 
     if (!post) {
-      return res.status(403).send('존재하지 않는 게시글입니다')
+      return res.status(404).send('존재하지 않는 게시글입니다')
     }
 
     if (req.user.id === post.UserId || (post.Retweet && post.Retweet.UserId === req.user.id)) {
@@ -241,7 +285,7 @@ router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => {
       }]
     })
 
-    res.status(201).json(retweetWithPrevPost)
+    res.status(200).json(retweetWithPrevPost)
   } catch (err) {
     console.error(err)
     next(err)
